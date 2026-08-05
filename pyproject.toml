@@ -1,0 +1,23 @@
+[project]
+name = "ai-recruiter"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "apscheduler>=3.11.3",
+    "docx>=0.2.4",
+    "dotenv>=0.9.9",
+    "fastapi>=0.140.7",
+    "google-api-python-client>=2.198.0",
+    "google-auth-oauthlib>=1.4.0",
+    "google-genai>=2.14.0",
+    "psycopg2>=2.9.12",
+    "pydantic>=2.13.4",
+    "pymupdf>=1.28.0",
+    "python-docx>=1.2.0",
+    "python-dotenv>=1.2.2",
+    "requests>=2.34.2",
+    "sqlmodel>=0.0.39",
+    "uvicorn>=0.51.0",
+]
