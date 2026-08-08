@@ -54,7 +54,7 @@ class SupervisorAgent:
         self.memory.add_evaluation(
             candidate_id=candidate.id,
             job_id=job_id,
-            score=evaluation.overall_score,
+            score=evaluation.score,
             recommendation=evaluation.recommendation,
             strength=",".join(
                 evaluation.strengths
@@ -65,7 +65,7 @@ class SupervisorAgent:
         )
         # 5. Decision
 
-        if evaluation.overall_score >= 80:
+        if evaluation.score >= 80:
 
 
             self.calendar.run(
@@ -98,7 +98,7 @@ Recruitment Team
             status="Interview Scheduled"
 
 
-        elif evaluation.overall_score >=60:
+        elif evaluation.score >=60:
 
 
             self.email.run(

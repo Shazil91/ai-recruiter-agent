@@ -3,7 +3,7 @@ from typing import List
 
 class Evaluation(BaseModel):
 
-    overall_score: int
+    score: int
 
     recommendation: str
 
