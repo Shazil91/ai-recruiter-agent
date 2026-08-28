@@ -24,10 +24,6 @@ The system automatically monitors incoming resumes from Gmail, extracts candidat
 
 # 🏗 System Architecture
 
-```
-   # 🏗️ System Architecture
-
-The platform follows an automated intelligence pipeline that collects information from multiple sources, processes the data, stores it in structured and vector databases, and uses Gemini-powered RAG to generate company insights.
 
 <p align="center">
   <img src="./architecture.png" alt="AI Recruiter Agent" width="100%">
