@@ -25,36 +25,14 @@ The system automatically monitors incoming resumes from Gmail, extracts candidat
 # 🏗 System Architecture
 
 ```
-                    Gmail Inbox
-                         │
-                         ▼
-                Gmail Monitoring Agent
-                         │
-                         ▼
-                 Resume Parser Agent
-                         │
-                         ▼
-              Gemini Candidate Extractor
-                         │
-                         ▼
-               Candidate PostgreSQL DB
-                         │
-                         ▼
-              Candidate Evaluation Agent
-                         │
-              Fetch Job Requirement
-                         │
-                         ▼
-                  Gemini Evaluation
-                         │
-                         ▼
-                Evaluation PostgreSQL
-                         │
-            ┌────────────┴────────────┐
-            ▼                         ▼
-   Google Calendar API         Gmail API
- Schedule Interview         Send Candidate Email
-```
+   # 🏗️ System Architecture
+
+The platform follows an automated intelligence pipeline that collects information from multiple sources, processes the data, stores it in structured and vector databases, and uses Gemini-powered RAG to generate company insights.
+
+<p align="center">
+  <img src="./architecture.png" alt="AI Recruiter Agent" width="100%">
+</p>
+
 
 ---
 
