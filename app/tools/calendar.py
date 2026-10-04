@@ -1,11 +1,17 @@
 import os
+
 from datetime import datetime, timedelta
+
+from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
 
-SCOPES = ['https://www.googleapis.com/auth/calendar']
+SCOPES = [
+    "https://www.googleapis.com/auth/calendar"
+]
+
 TOKEN_FILE = "token_calendar.json"
 
 
@@ -15,41 +21,76 @@ class CalendarTool:
         return "calendar"
 
     def authenticate(self):
+
         creds = None
 
-        # ✅ Load existing token
         if os.path.exists(TOKEN_FILE):
-            creds = Credentials.from_authorized_user_file(TOKEN_FILE, SCOPES)
-
-        # ❗ If no token → login
-        if not creds:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES
+            creds = Credentials.from_authorized_user_file(
+                TOKEN_FILE,
+                SCOPES
             )
-            creds = flow.run_local_server(port=0)
 
-            # ✅ Save token
-            with open(TOKEN_FILE, 'w') as token:
+        if creds and creds.expired and creds.refresh_token:
+
+            creds.refresh(Request())
+
+            with open(TOKEN_FILE, "w") as token:
                 token.write(creds.to_json())
 
-        return build('calendar', 'v3', credentials=creds)
+        if not creds or not creds.valid:
+
+            flow = InstalledAppFlow.from_client_secrets_file(
+                "credentials.json",
+                SCOPES
+            )
+
+            creds = flow.run_local_server(port=0)
+
+            with open(TOKEN_FILE, "w") as token:
+                token.write(creds.to_json())
+
+        return build(
+            "calendar",
+            "v3",
+            credentials=creds
+        )
 
     def run(self, input: dict):
 
         service = self.authenticate()
 
-        start_time = datetime.utcnow().isoformat() + 'Z'
-        end_time = (datetime.utcnow() + timedelta(hours=1)).isoformat() + 'Z'
+        start_time = datetime.utcnow()
+        end_time = start_time + timedelta(hours=1)
 
         event = {
-            'summary': input.get("title"),
-            'start': {'dateTime': start_time},
-            'end': {'dateTime': end_time},
+            "summary": input["title"],
+
+            "start": {
+                "dateTime": start_time.isoformat() + "Z",
+                "timeZone": "UTC",
+            },
+
+            "end": {
+                "dateTime": end_time.isoformat() + "Z",
+                "timeZone": "UTC",
+            },
+
+            "attendees": [
+                {
+                    "email": input["candidate_email"]
+                }
+            ],
         }
 
-        event = service.events().insert(
-            calendarId='primary',
-            body=event
+        created_event = service.events().insert(
+            calendarId="primary",
+            body=event,
+            sendUpdates="all"
         ).execute()
 
-        return f"📅 Event created: {event.get('htmlLink')}" 
+        return {
+            "status": "scheduled",
+            "event_id": created_event["id"],
+            "calendar_link": created_event.get("htmlLink")
+        }
+        

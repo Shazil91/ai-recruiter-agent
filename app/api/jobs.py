@@ -56,6 +56,7 @@ def update_job(
 
     if not updated:
         raise HTTPException(
+    
             status_code=404,
             detail="Job not found",
         )

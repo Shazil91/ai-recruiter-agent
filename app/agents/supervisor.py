@@ -20,8 +20,8 @@ class SupervisorAgent:
 
     def process_resume(
         self,
-        file_path:str,
-        job_id:int
+        file_path: str,
+        job_id: int
     ):
 
         # 1. Parse resume
@@ -29,7 +29,6 @@ class SupervisorAgent:
         candidate_data = self.resume_parser.run(
             file_path
         )
-
 
         # 2. Save candidate
 
@@ -40,7 +39,6 @@ class SupervisorAgent:
             resume_path=file_path
         )
 
-
         # 3. Evaluate candidate
 
         evaluation = self.candidate_evaluator.evaluate(
@@ -48,38 +46,45 @@ class SupervisorAgent:
             job_id=job_id
         )
 
-
-        # 4. Save evaluation
+        # 4. Save complete evaluation
 
         self.memory.add_evaluation(
             candidate_id=candidate.id,
             job_id=job_id,
             score=evaluation.score,
             recommendation=evaluation.recommendation,
-            strength=",".join(
-                evaluation.strengths
-            ),
-            weakness=",".join(
-                evaluation.weaknesses
-            )
+            matched_skills=evaluation.matched_skills,
+            missing_skills=evaluation.missing_skills,
+            strengths=evaluation.strengths,
+            weaknesses=evaluation.weaknesses,
+            interview_questions=evaluation.interview_questions,
         )
+
         # 5. Decision
 
         if evaluation.score >= 80:
 
+            # Schedule interview
 
-            self.calendar.run(
+            calendar_result = self.calendar.run(
                 {
                     "title":
-                    f"Technical Interview - {candidate.name}"
+                    f"Technical Interview - {candidate.name}",
+
+                    "candidate_email":
+                    candidate.email,
                 }
             )
 
+            # Send email
 
-            self.email.run(
+            email_result = self.email.run(
                 {
-                    "to_email":candidate.email,
-                    "subject":"Interview Invitation",
+                    "to_email": candidate.email,
+
+                    "subject":
+                    "Interview Invitation",
+
                     "body":
                     f"""
 Hello {candidate.name},
@@ -88,71 +93,82 @@ Congratulations!
 
 You have been shortlisted for a technical interview.
 
-Regards
+Your interview has been scheduled on Google Calendar.
+
+You will receive a calendar invitation with the
+interview details.
+
+Regards,
 Recruitment Team
 """
                 }
             )
 
+            status = "Interview Scheduled"
 
-            status="Interview Scheduled"
+        elif evaluation.score >= 60:
 
-
-        elif evaluation.score >=60:
-
-
-            self.email.run(
+            email_result = self.email.run(
                 {
-                    "to_email":candidate.email,
-                    "subject":"Application Update",
-                    "body":
-                    f"""
-Hello {candidate.name},
+                    "to_email": candidate.email,
 
-Your application is currently under review.
+                    "subject":
+                    "Application Update",
 
-Regards
-Recruitment Team
-"""
-                }
-            )
-
- 
-            status="On Hold"
-
-
-
-        else:
-
-
-            self.email.run(
-                {
-                    "to_email":candidate.email,
-                    "subject":"Application Status",
                     "body":
                     f"""
 Hello {candidate.name},
 
 Thank you for applying.
 
-We will not be moving forward at this time.
+Your application is currently under review.
 
-Regards
+We will contact you if you are selected for the next stage.
+
+Regards,
 Recruitment Team
 """
                 }
             )
 
+            calendar_result = None
 
-            status="Rejected"
+            status = "On Hold"
 
+        else:
 
+            email_result = self.email.run(
+                {
+                    "to_email": candidate.email,
+
+                    "subject":
+                    "Application Status",
+
+                    "body":
+                    f"""
+Hello {candidate.name},
+
+Thank you for taking the time to apply.
+
+After reviewing your application, we will not be
+moving forward with your application at this time.
+
+We appreciate your interest.
+
+Regards,
+Recruitment Team
+"""
+                }
+            )
+
+            calendar_result = None
+
+            status = "Rejected"
 
         return {
-
-            "candidate":candidate,
-
-            "evaluation":evaluation,
-
-            "status":status
+            "candidate": candidate,
+            "evaluation": evaluation,
+            "status": status,
+            "email": email_result,
+            "calendar": calendar_result,
         }

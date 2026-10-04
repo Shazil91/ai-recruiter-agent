@@ -1,9 +1,7 @@
 from pathlib import Path
 import json
-
 import fitz
 from docx import Document
-
 from app.schema.candidate import Candidate
 from app.core.gemini import ask_gemini
 
@@ -51,7 +49,6 @@ class DocxTool:
         )
 
 class GeminiResumeParser:
-
 
     def extract_candidate(
         self,
@@ -251,3 +248,4 @@ class ResumeParserAgent:
         )
 
         return candidate
+    

@@ -67,7 +67,7 @@ Education:
 Return ONLY valid JSON.
 
 {{
-"overall_score":0,
+"score":0,
 
 "recommendation":"Interview",
 

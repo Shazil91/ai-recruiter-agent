@@ -6,15 +6,11 @@ from google import genai
 
 load_dotenv()
 
-
-API_KEY = os.getenv(
-    "GEMINI_API_KEY"
-)
-
+API_KEY = os.getenv("GEMINI_API_KEY")
 
 if not API_KEY:
     raise ValueError(
-        "GEMINI_API_KEY is missing"
+        "GEMINI_API_KEY is missing from environment variables."
     )
 
 
@@ -23,13 +19,11 @@ client = genai.Client(
 )
 
 
-
 def ask_gemini(prompt: str):
 
     response = client.models.generate_content(
-        model="gemini-2.5-flash",
+        model="gemini-3.7-flash",
         contents=prompt
     )
-
 
     return response.text

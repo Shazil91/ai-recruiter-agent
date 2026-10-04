@@ -1,12 +1,11 @@
 from sqlmodel import Session, select
-
+from typing import List
 from app.models.db import engine
 from app.models.model import (
     Candidate,
     JobRequirement,
     Evaluation
 )
-
 
 
 class RecruitmentRepository:
@@ -133,29 +132,34 @@ class RecruitmentRepository:
 
     def add_evaluation(
         self,
-        candidate_id:int,
-        job_id:int,
-        score:int,
-        recommendation:str,
-        strength:str,
-        weakness:str
-    ):
-
+        candidate_id: int,
+        job_id: int,
+        score: int,
+        recommendation: str,
+        matched_skills: List[str],
+        missing_skills: List[str],
+        strengths: List[str],
+        weaknesses: List[str],
+        interview_questions: List[str],
+):
         with Session(engine) as session:
 
-            evaluation = Evaluation(
-                candidate_id=candidate_id,
-                job_id=job_id,
-                score=score,
-                recommendation=recommendation,
-                strength=strength,
-                weakness=weakness
+           evaluation = Evaluation(
+              candidate_id=candidate_id,
+              job_id=job_id,
+              score=score,
+              recommendation=recommendation,
+              matched_skills=matched_skills,
+              missing_skills=missing_skills,
+              strengths=strengths,
+              weaknesses=weaknesses,
+             interview_questions=interview_questions,
             )
 
-            session.add(evaluation)
+           session.add(evaluation)
 
-            session.commit()
+           session.commit()
 
-            session.refresh(evaluation)
+           session.refresh(evaluation)
 
-            return evaluation
+           return evaluation

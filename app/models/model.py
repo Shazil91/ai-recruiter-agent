@@ -1,6 +1,5 @@
 from datetime import UTC, datetime
-from typing import Optional
-
+from typing import List, Optional
 from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import SQLModel, Field
@@ -62,6 +61,13 @@ class Candidate(SQLModel, table=True):
     )
 
 
+from typing import Optional, List
+from datetime import datetime, UTC
+
+from sqlmodel import SQLModel, Field
+from sqlalchemy import Column, JSON
+
+
 class Evaluation(SQLModel, table=True):
     __tablename__ = "evaluations"
 
@@ -81,11 +87,26 @@ class Evaluation(SQLModel, table=True):
 
     recommendation: str
 
-    strengths: str
+    matched_skills: List[str] = Field(
+        sa_column=Column(JSON, nullable=False)
+    )
 
-    weaknesses: str
+    missing_skills: List[str] = Field(
+        sa_column=Column(JSON, nullable=False)
+    )
+
+    strengths: List[str] = Field(
+        sa_column=Column(JSON, nullable=False)
+    )
+
+    weaknesses: List[str] = Field(
+        sa_column=Column(JSON, nullable=False)
+    )
+
+    interview_questions: List[str] = Field(
+        sa_column=Column(JSON, nullable=False)
+    )
 
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(UTC)
     )
-    
