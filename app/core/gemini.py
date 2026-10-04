@@ -22,7 +22,7 @@ client = genai.Client(
 def ask_gemini(prompt: str):
 
     response = client.models.generate_content(
-        model="gemini-3.7-flash",
+        model="gemini-3.5-flash",
         contents=prompt
     )
 

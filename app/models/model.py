@@ -4,6 +4,8 @@ from sqlalchemy import Column
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlmodel import SQLModel, Field
 
+from sqlalchemy import Column, JSON
+
 class JobRequirement(SQLModel, table=True):
 
     __tablename__ = "job_requirements"
@@ -61,11 +63,6 @@ class Candidate(SQLModel, table=True):
     )
 
 
-from typing import Optional, List
-from datetime import datetime, UTC
-
-from sqlmodel import SQLModel, Field
-from sqlalchemy import Column, JSON
 
 
 class Evaluation(SQLModel, table=True):

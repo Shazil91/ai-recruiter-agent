@@ -7,8 +7,8 @@ wheels/
 *.egg-info
 .env
 token.json
-credentials.json
 token_calendar.json
+credentials.json
 
 # Virtual environments
 .venv

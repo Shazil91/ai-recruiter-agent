@@ -87,20 +87,20 @@ class SupervisorAgent:
 
                     "body":
                     f"""
-Hello {candidate.name},
+      Hello {candidate.name},
 
-Congratulations!
+      Congratulations!
 
-You have been shortlisted for a technical interview.
+      You have been shortlisted for a technical interview.
 
-Your interview has been scheduled on Google Calendar.
+      Your interview has been scheduled on Google Calendar.
 
-You will receive a calendar invitation with the
-interview details.
+      You will receive a calendar invitation with the
+      interview details.
 
-Regards,
-Recruitment Team
-"""
+      Regards,
+      Recruitment Team
+      """
                 }
             )
 
@@ -117,17 +117,17 @@ Recruitment Team
 
                     "body":
                     f"""
-Hello {candidate.name},
+      Hello {candidate.name},
 
-Thank you for applying.
+      Thank you for applying.
 
-Your application is currently under review.
+      Your application is currently under review.
 
-We will contact you if you are selected for the next stage.
+      We will contact you if you are selected for the next stage.
 
-Regards,
-Recruitment Team
-"""
+      Regards,
+      Recruitment Team
+      """
                 }
             )
 
@@ -146,18 +146,18 @@ Recruitment Team
 
                     "body":
                     f"""
-Hello {candidate.name},
+      Hello {candidate.name},
 
-Thank you for taking the time to apply.
+      Thank you for taking the time to apply.
 
-After reviewing your application, we will not be
-moving forward with your application at this time.
+      After reviewing your application, we will not be
+      moving forward with your application at this time.
 
-We appreciate your interest.
+      We appreciate your interest.
 
-Regards,
-Recruitment Team
-"""
+      Regards,
+      Recruitment Team
+      """
                 }
             )
 
